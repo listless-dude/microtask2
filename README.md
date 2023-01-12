@@ -1,4 +1,5 @@
 # Microtask 2
+Deployed in: https://mz5mm5.deta.dev/
 Database: MongoDB
 ## Authentication Microservice:
 Route: '/api/auth'

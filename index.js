@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 const app = express();
-const mongoURI = 'mongodb+srv://oogway:lmaoxd23@cluster0.yubrivh.mongodb.net/?retryWrites=true&w=majority';
+const mongoURI = 'mongodb+srv://{username}:{password}@cluster0.yubrivh.mongodb.net/?retryWrites=true&w=majority';
 const PORT = 5000;
 app.use(express.json());
 
