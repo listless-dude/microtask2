@@ -1,7 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const Users = require('../models/authentication');
+const Users = require('models/authentication');
 
 const router = express.Router();
 const HASH = 'hosteldevta';
@@ -26,8 +26,9 @@ router.post('/createUser', async (req, res) => {
         // data to be encrypted
         const data = { id: user.id };
 
+        // encoding the data using a HASH key
         const authToken = jwt.sign(data, HASH);
-        res.json({status: "User added to database", authToken: authToken, user});
+        res.json({status: "User added to database", authToken: authToken});
     }
     catch (error) {
         console.log(error);
@@ -50,11 +51,21 @@ router.post('/login', async (req, res) => {
         const data = { id: user.id }; 
 
         const authToken = jwt.sign(data, HASH);
-        res.json({status: "Logged in", authToken: authToken, user});
+        res.json({status: "Logged in", authToken: authToken});
     }
     catch (error) {
         console.log(error);
         res.status(500).send("Internal server error");
+    }
+});
+
+router.get('/getAllUsers', async (req, res) => {
+    try {
+        const allUsers = await Users.find();
+        res.json({ allUsers });
+    }
+    catch (error) {
+        console.log(error);
     }
 });
 
@@ -66,11 +77,32 @@ router.get('/getUser/:id', async (req, res) => {
         if (!user)
             return res.json({status: "User doesn't exist"});
         
-        res.json({status: "User found", user});
+        res.json({user});
     }
     catch (error) {
         console.log(error);
         res.status(500).send("Internal Server Error");
+    }
+});
+
+router.delete('/deleteUser', async (req, res) => {
+    try {
+        const token = req.header('authToken');
+        if (!token)
+            res.status(400).send({ status: "Not found token" });
+        const data = jwt.verify(token, JWT_SECRET);
+
+        let user = await Users.findById(data.id);
+        if (!user)
+            return res.status(400).send("User doesn't exist");
+        
+        user = await Users.findByIdAndDelete(data.id);
+        res.json({deletedUser: user});
+    }
+    catch (error)
+    {
+        console.log(error);
+        res.status(500).send("Internal server error");
     }
 });
 
