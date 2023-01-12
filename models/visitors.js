@@ -10,10 +10,11 @@ const VisitorSchema = new Schema({
     
     visitors: {
         type: Number,
+        required: true,
         default: 0
     }
 }, { timestamps:true });
 
-const Visitor=mongoose.model('visitor',VisitorSchema);
+const Visitor = mongoose.model('visitor', VisitorSchema);
   
-module.exports=Visitor;
+module.exports = Visitor;

@@ -10,9 +10,8 @@ mongoose.connect(mongoURI, () => {
     console.log('Connected to mongo successfully');
 });
 
-app.use('/api/authentication', require('./routes/authenticate'));
+app.use('/api/auth', require('./routes/authenticate'));
 app.use('/api/visitor', require('./routes/visitorCount'));
-
 app.listen(PORT, () => {
     console.log(`Server running on the port: ${PORT}`);
 });
