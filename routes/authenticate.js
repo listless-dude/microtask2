@@ -1,7 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const Users = require('models/authentication');
+const Users = require('../models/authentication');
 
 const router = express.Router();
 const HASH = 'hosteldevta';
@@ -90,7 +90,7 @@ router.delete('/deleteUser', async (req, res) => {
         const token = req.header('authToken');
         if (!token)
             res.status(400).send({ status: "Not found token" });
-        const data = jwt.verify(token, JWT_SECRET);
+        const data = jwt.verify(token, HASH);
 
         let user = await Users.findById(data.id);
         if (!user)
